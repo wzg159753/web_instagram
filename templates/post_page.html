@@ -1,0 +1,8 @@
+{% extends ./base.html %}
+
+{% block title %}Post Page{% end %}
+
+{% block body %}
+    <span>Is Post {{ p_id }} Page</span><br>
+    <div><img src="{{ static_url('images/{}.jpg'.format(p_id)) }}" alt=""></div>
+{% end %}

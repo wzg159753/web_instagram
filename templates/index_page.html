@@ -1,0 +1,10 @@
+{% extends ./base.html %}
+
+{% block title %}Index Page{% end %}
+
+{% block body %}
+    <span>Is Index Page</span><br>
+    {% for num in range(1,3) %}
+        <img src="{{ static_url('images/{}.jpg'.format(num)) }}" alt="">
+    {% end %}
+{% end %}
