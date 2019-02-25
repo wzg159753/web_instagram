@@ -3,8 +3,8 @@ import tornado.ioloop
 import tornado.options
 from tornado.options import define, options
 
-from handlers import main
-
+from handlers import main, auth
+from utils.verify import hash_md5
 
 define('port', default=8080, help='run port', type=int)
 
@@ -14,13 +14,28 @@ class Application(tornado.web.Application):
             (r'/', main.IndexHandler),
             (r'/explore', main.ExploreHandler),
             (r'/post/(?P<p_id>[0-9]+)', main.PostHandler),
-            (r'/upload', main.UploadHandler)
+            (r'/upload', main.UploadHandler),
+            (r'/login', auth.LoginHandler)
         ]
 
         settings = dict(
             debug = True,
             template_path = 'templates',
-            static_path = 'static'
+            static_path = 'static',
+            login_url = '/login',
+            cookie_secret = hash_md5('salt'),
+            pycket = {
+                'engine': 'redis',
+                'storage': {
+                    'host': 'localhost',
+                    'port': 6379,
+                    'db_sessions': 6,
+                    'max_connections': 2**10
+                },
+                'cookies': {
+                    'expires_days': 30
+                }
+            }
         )
 
         super().__init__(handler, **settings)

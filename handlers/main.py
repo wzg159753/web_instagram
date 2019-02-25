@@ -1,9 +1,23 @@
+import tornado.web
 from tornado.web import RequestHandler
-
+from pycket.session import SessionMixin
 from utils.picture import save_upload, save_thumb, get_glob
 
 
-class IndexHandler(RequestHandler):
+class BaseHandler(RequestHandler, SessionMixin):
+    """
+    session登录验证基类
+    """
+    def get_current_user(self):
+        """
+        重写current_user  返回用户名  供其他路由调用
+        :return:
+        """
+        return self.session.get('user_id', None)
+
+
+class IndexHandler(BaseHandler):
+    @tornado.web.authenticated
     def get(self, *args, **kwargs):
         """获取图片路径列表"""
         path_list = get_glob('uploads')
@@ -21,8 +35,9 @@ class PostHandler(RequestHandler):
         self.render('post_page.html', p_id = kwargs['p_id'])
 
 
-class UploadHandler(RequestHandler):
+class UploadHandler(BaseHandler):
     """上传图片逻辑"""
+    @tornado.web.authenticated
     def get(self, *args, **kwargs):
         self.render('upload_page.html')
 
