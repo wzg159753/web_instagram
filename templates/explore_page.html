@@ -4,7 +4,7 @@
 
 {% block body %}
     <span>Is Explor Page</span><br>
-    {% for img in path_list %}
-        <img src="/{{ img }}" alt="" width="200px">
+    {% for img in img_list %}
+        <img src="/{{ img.thumb_url }}" alt="" width="200px">
     {% end %}
 {% end %}

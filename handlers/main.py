@@ -1,7 +1,8 @@
 import tornado.web
 from tornado.web import RequestHandler
 from pycket.session import SessionMixin
-from utils.picture import save_upload, save_thumb, get_glob
+from utils.picture import save_upload, save_thumb
+from utils.verify import add_post_for, get_post_all, get_upload_post, get_post_id
 
 
 class BaseHandler(RequestHandler, SessionMixin):
@@ -20,19 +21,20 @@ class IndexHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self, *args, **kwargs):
         """获取图片路径列表"""
-        path_list = get_glob('uploads')
+        path_list = get_upload_post(self.current_user)
         self.render('index_page.html', path_list=path_list)
 
 
 class ExploreHandler(RequestHandler):
     def get(self, *args, **kwargs):
-        path_list = get_glob('thumbs')
-        self.render('explore_page.html', path_list=path_list)
+        img_list = get_post_all()
+        self.render('explore_page.html', img_list = img_list)
 
 
 class PostHandler(RequestHandler):
     def get(self, *args, **kwargs):
-        self.render('post_page.html', p_id = kwargs['p_id'])
+        p_id = get_post_id(kwargs['p_id'])
+        self.render('post_page.html', p_id = p_id)
 
 
 class UploadHandler(BaseHandler):
@@ -52,5 +54,7 @@ class UploadHandler(BaseHandler):
             # 调用保存到uploads目录的方法
             upload_path = save_upload(name, content)
             # 调用保存缩略图方法
-            save_thumb(name, upload_path)
+            thumb_path = save_thumb(name, upload_path)
+            post = add_post_for(upload_path, thumb_path, self.current_user)
+            self.redirect('/post/{}'.format(post.id))
 

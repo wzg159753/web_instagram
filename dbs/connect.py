@@ -20,7 +20,6 @@ db_url = 'mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8'.format(
 engine = create_engine(db_url)
 Base = declarative_base(engine)
 Session = sessionmaker(engine)
-session = Session()
 
 if __name__ == '__main__':
     cursor = engine.connect()

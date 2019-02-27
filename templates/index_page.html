@@ -5,6 +5,6 @@
 {% block body %}
     <span>Is Index Page</span><br>
     {% for img in path_list %}
-        <img src="/{{ img }}" alt="">
+        <img src="/{{ img.img_url }}" alt="" width="900px">
     {% end %}
 {% end %}

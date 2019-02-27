@@ -3,6 +3,6 @@
 {% block title %}Post Page{% end %}
 
 {% block body %}
-    <span>Is Post {{ p_id }} Page</span><br>
-    <div><img src="/static/uploads/{{ p_id }}.jpg" alt=""></div>
+    <span>Is Post {{ p_id.id }} Page</span><br>
+    <div><img src="/{{ p_id.img_url }}" alt=""></div>
 {% end %}

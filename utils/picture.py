@@ -1,7 +1,7 @@
 import glob
 import os
 from PIL import Image
-
+from dbs.modules import Post
 
 def save_upload(name, content):
     """
@@ -29,7 +29,10 @@ def save_thumb(name, upload_path):
     im = Image.open(upload_path)
     # pillow库的 生成缩略图方法
     im.thumbnail(size)
-    im.save('static/thumbs/{}_{}x{}{}'.format(title, size[0], size[1], ext))
+    thumb_path = 'static/thumbs/{}_{}x{}{}'.format(title, size[0], size[1], ext)
+    im.save(thumb_path)
+    return thumb_path
+
 
 
 def get_glob(path):
