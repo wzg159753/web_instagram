@@ -30,6 +30,13 @@ class User(Base):
 
     @classmethod
     def add_user(cls, username, password, sex):
+        """
+        添加用户方法
+        :param username:
+        :param password:
+        :param sex:
+        :return:
+        """
         info = User(username=username, password=password, sex=sex)
         session.add(info)
         session.commit()
@@ -37,11 +44,31 @@ class User(Base):
 
     @classmethod
     def is_exits_user(cls, username):
+        """
+        判断用户名存不存在方法
+        :param username:
+        :return:
+        """
         return session.query(exists().where(User.username == username)).scalar()
 
     @classmethod
     def get_user(cls, username):
+        """
+        获取用户方法
+        :param username:
+        :return:
+        """
         return session.query(User).filter(User.username == username).first()
+
+    @classmethod
+    def get_user_info(cls, username, password):
+        """
+        判断用户信息方法  主要是后台password的比对
+        :param username:
+        :param password:
+        :return:
+        """
+        return session.query(User).filter(User.username == username, User.password == password).first()
 
 
 class Post(Base):

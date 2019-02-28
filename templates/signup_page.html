@@ -3,6 +3,7 @@
 {% block title %}Sign Up{% end %}
 
 {% block body %}
+    <div>{% if msg %}{{ msg }}{% end %}</div>
     <form action="/signup" method="post" enctype="multipart/form-data">
         <div>
             <label for="">用户名：</label><br>
