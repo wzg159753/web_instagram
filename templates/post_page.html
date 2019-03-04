@@ -3,6 +3,7 @@
 {% block title %}Post Page{% end %}
 
 {% block body %}
-    <span>Is Post {{ p_id.id }} Page</span><br>
-    <div><img src="/{{ p_id.img_url }}" alt=""></div>
+    <span>Is Post {{ post.id }} Page</span><br>
+    <div><img src="{{ static_url(post.img_url) }}" alt="" width="900"></div>
+<div>当前用户<a href="/porfile?name={{ post.users.username }}">{{ post.users.username }}</a>, 点击进入详情页</div>
 {% end %}

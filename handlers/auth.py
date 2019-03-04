@@ -48,7 +48,7 @@ class SignupHandler(BaseHandler):
         if password1 == password2:
             # 如果相同  就调用注册函数
             result = signup_user(username, password1, sex)
-            if result:
+            if result['status'] ==  200:
                 # 如果注册成功 就直接设置为登录状态
                 self.session.set('user_id', username)
                 self.redirect(result['msg'])

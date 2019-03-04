@@ -42,10 +42,10 @@ def signup_user(username, password, sex):
     if not User.is_exits_user(username):
         # 如果不存在  就注册
         User.add_user(username, hash_md5(password), sex)
-        info['msg'] = '/'
+        info = {'status': 200, 'msg': 'ok'}
         return info
     else:
-        info['msg'] = 'final'
+        info = {'status': 400, 'msg': 'error'}
         return info
 
 def get_user(username):
@@ -79,7 +79,7 @@ def get_post_all():
     获取所有post的路径信息 展示explore页面
     :return:
     """
-    return session.query(Post).all()
+    return session.query(Post).order_by(Post.id.desc()).all()
 
 def get_upload_post(username):
     """
@@ -88,7 +88,8 @@ def get_upload_post(username):
     :return:
     """
     user = get_user(username)
-    return session.query(Post).filter(Post.user_id == user.id).all()
+    if user:
+        return session.query(Post).filter(Post.user_id == user.id).order_by(Post.id.desc()).all()
 
 def get_post_id(post_id):
     """

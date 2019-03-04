@@ -1,7 +1,7 @@
 import tornado.web
 from tornado.web import RequestHandler
 from pycket.session import SessionMixin
-from utils.picture import save_upload, save_thumb
+from utils.picture import UploadImage
 from utils.verify import add_post_for, get_post_all, get_upload_post, get_post_id
 
 
@@ -33,8 +33,8 @@ class ExploreHandler(RequestHandler):
 
 class PostHandler(RequestHandler):
     def get(self, *args, **kwargs):
-        p_id = get_post_id(kwargs['p_id'])
-        self.render('post_page.html', p_id = p_id)
+        post = get_post_id(kwargs['p_id'])
+        self.render('post_page.html', post = post)
 
 
 class UploadHandler(BaseHandler):
@@ -48,13 +48,19 @@ class UploadHandler(BaseHandler):
         img_list = self.request.files.get('image')
         # 获取的是一个列表  因为可能有多个相同name
         for img in img_list:
-            # 每一个对象的filename对应图片名 ***.jpg  body对应图片二进制数据
             name = img['filename']
             content = img['body']
+            # 实例化一个图片保存类
+            im = UploadImage(name, self.settings['static_path'])
             # 调用保存到uploads目录的方法
-            upload_path = save_upload(name, content)
+            im.save_upload(content)
             # 调用保存缩略图方法
-            thumb_path = save_thumb(name, upload_path)
-            post = add_post_for(upload_path, thumb_path, self.current_user)
+            im.save_thumb()
+            post = add_post_for(im.upload_path, im.thumb_path, self.current_user)
             self.redirect('/post/{}'.format(post.id))
 
+
+class PorfileHandler(BaseHandler):
+    def get(self, *args, **kwargs):
+        username = self.get_argument('name', '')
+        print(username)

@@ -5,6 +5,7 @@
 {% block body %}
     <span>Is Explor Page</span><br>
     {% for img in img_list %}
-        <img src="/{{ img.thumb_url }}" alt="" width="200px">
+        <a href="/post/{{ img.id }}"><img src="{{ static_url(img.thumb_url) }}" alt="" width="200px"></a>
+
     {% end %}
 {% end %}
