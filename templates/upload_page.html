@@ -3,8 +3,18 @@
 {% block title %}Upload Page{% end %}
 
 {% block body %}
+<div class="row">
     <form action="/upload" enctype="multipart/form-data" method="post">
-        <input type="file" name="image">
-        <input type="submit">
+        <div class="input-group flex-nowrap">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="addon-wrapping">@</span>
+            </div>
+            <input type="file" name="image" class="form-control" placeholder="Username" aria-label="Username"
+                   aria-describedby="addon-wrapping">
+        </div>
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button class="btn btn-danger">上传</button>
+        </div>
     </form>
+</div>
 {% end %}

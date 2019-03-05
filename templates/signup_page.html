@@ -4,23 +4,38 @@
 
 {% block body %}
     <div>{% if msg %}{{ msg }}{% end %}</div>
+<div class="row">
     <form action="/signup" method="post" enctype="multipart/form-data">
-        <div>
-            <label for="">用户名：</label><br>
-            <input type="text" name="username" placeholder="请输入用户名" required="">
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">@</span>
+            </div>
+            <input type="text" name="username" class="form-control" placeholder="please username" aria-label="Username" aria-describedby="basic-addon1" aria-placeholder="please username、
+">
         </div>
+
         <div>
-            <input type="radio" name="sex" value="男"><label for="">男</label>
-            <input type="radio" name="sex" value="女"><label for="">女</label>
+            <input type="radio" name="sex" value="男"><label for=""><strong>男</strong></label>
+            <input type="radio" name="sex" value="女"><label for=""><strong>女</strong></label>
         </div>
-        <div>
-            <label for="">密码：</label><br>
-            <input type="password" name="password1" placeholder="请输入密码">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">@</span>
+            </div>
+            <input type="password" name="password1" class="form-control" placeholder="please password" aria-label="Username"
+                   aria-describedby="basic-addon1" aria-placeholder="please password">
         </div>
-        <div>
-            <label for="">再次输入密码：</label><br>
-            <input type="password" name="password2" placeholder="请再次输入密码">
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">@</span>
+            </div>
+            <input type="password" name="password2" class="form-control" placeholder="please password again" aria-label="Username"
+                   aria-describedby="basic-addon1" aria-placeholder="please password again">
         </div>
-        <input type="submit">
+
+        <button class="btn btn-success btn-lg">Sign Up</button>
     </form>
+</div>
 {% end %}

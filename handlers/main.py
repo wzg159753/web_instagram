@@ -27,10 +27,9 @@ class IndexHandler(BaseHandler):
 
 class ExploreHandler(BaseHandler):
     def get(self, *args, **kwargs):
-        page = self.get_argument('page', 1)
-        page = paginations(page)
-        img_list = get_post_all()
-        self.render('explore_page.html', img_list = img_list, page=page)
+        number = self.get_argument('page', '1')
+        page = paginations(number)
+        self.render('explore_page.html', page=page, number=number)
 
 
 class PostHandler(BaseHandler):
