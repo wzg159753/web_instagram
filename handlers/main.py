@@ -2,7 +2,7 @@ import tornado.web
 from tornado.web import RequestHandler
 from pycket.session import SessionMixin
 from utils.picture import UploadImage
-from utils.verify import add_post_for, get_post_all, get_upload_post, get_post_id
+from utils.verify import add_post_for, get_post_all, get_upload_post, get_post_id, paginations
 
 
 class BaseHandler(RequestHandler, SessionMixin):
@@ -25,13 +25,15 @@ class IndexHandler(BaseHandler):
         self.render('index_page.html', path_list=path_list)
 
 
-class ExploreHandler(RequestHandler):
+class ExploreHandler(BaseHandler):
     def get(self, *args, **kwargs):
+        page = self.get_argument('page', 1)
+        page = paginations(page)
         img_list = get_post_all()
-        self.render('explore_page.html', img_list = img_list)
+        self.render('explore_page.html', img_list = img_list, page=page)
 
 
-class PostHandler(RequestHandler):
+class PostHandler(BaseHandler):
     def get(self, *args, **kwargs):
         post = get_post_id(kwargs['p_id'])
         self.render('post_page.html', post = post)
@@ -64,3 +66,10 @@ class PorfileHandler(BaseHandler):
     def get(self, *args, **kwargs):
         username = self.get_argument('name', '')
         print(username)
+
+class LoginoutHandler(BaseHandler):
+
+    @tornado.web.authenticated
+    def get(self, *args, **kwargs):
+        self.session.delete('user_id')
+        self.redirect('/login')

@@ -8,7 +8,7 @@ class LoginHandler(BaseHandler):
     """
     def get(self, *args, **kwargs):
         # 获取登录之前的路由
-        next = self.get_argument('next', '')
+        next = self.get_argument('next', '/')
         self.render('login_page.html', next = next)
 
     def post(self, *args, **kwargs):
@@ -26,6 +26,7 @@ class LoginHandler(BaseHandler):
             else:
                 # 如果next为空  就说明是直接进login路由的
                 self.session.set('user_id', username)
+                self.redirect(next)
         else:
             self.write("<script>alert('用户或密码错误')</script>")
 

@@ -1,5 +1,6 @@
 import hashlib
 from dbs.modules import User, session, Post
+from sqlalchemy_pagination import paginate
 
 
 def hash_md5(content):
@@ -98,3 +99,12 @@ def get_post_id(post_id):
     :return:
     """
     return session.query(Post).filter(Post.id == post_id).first()
+
+def paginations(page):
+    """
+    sqlalchemy_pagination 的分页库
+    :param page:
+    :return:
+    """
+    # 第一个参数传入post的个数 ， 第二个参数是页数， 第三个参数是一页多少个
+    return paginate(Post.get_posts(), int(page), 2)

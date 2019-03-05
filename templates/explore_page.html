@@ -2,10 +2,72 @@
 
 {% block title %}Explor Page{% end %}
 
-{% block body %}
-    <span>Is Explor Page</span><br>
-    {% for img in img_list %}
-        <a href="/post/{{ img.id }}"><img src="{{ static_url(img.thumb_url) }}" alt="" width="200px"></a>
+{% block link %}
+    <link rel="stylesheet" href="{{ static_url('css/paginate.css') }}">
+{% end %}
 
-    {% end %}
+{% block body %}
+{#<div style="height: 500px">#}
+{#    <div class="row">#}
+{#        {% for img in img_list %}#}
+{#        <div class="card" style="width: 18rem;">#}
+{#            <a href="/post/{{ img.id }}"><img class="card-img-top" src="{{ static_url(img.thumb_url) }}"#}
+{#                                              alt="Card image cap"></a>#}
+{#            <div class="card-body">#}
+{#                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the#}
+{#                    card's#}
+{#                    content.</p>#}
+{#            </div>#}
+{#        </div>#}
+{#        {% end %}#}
+{#    </div>#}
+{#</div>#}
+
+
+<div>
+    <div class="row">
+        {% for p in page.items %}
+
+        <div class="card" style="width: 18rem;">
+            <a href="/post/{{ p.id }}"><img class="card-img-top" src="{{ static_url(p.thumb_url) }}"
+                                            alt="Card image cap"></a>
+            <div class="card-body">
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's
+                    content.</p>
+            </div>
+        </div>
+        {% end %}
+    </div>
+</div>
+<div style="display: inline;margin: 500px;">
+    <div class="paginate aa">
+        <a href="?page=1">首页</a>
+    </div>
+
+    <div class="paginate aa">
+        {% if page.previous_page %}
+            <div class="paginate"><a href="?page={{ page.previous_page }}">上一页</a></div>
+        {% end %}
+    </div>
+    <div class="paginate aa">
+        {% for p in range(1, page.pages+1) %}
+            <div class="paginate aa"><a href="?page={{ p }}">{{ p }}</a></div>
+        {% end %}
+    </div>
+    <div class="paginate aa">
+        {% if page.next_page %}
+            <div class="paginate"><a href="?page={{ page.next_page }}">下一页</a></div>
+        {% end %}
+    </div>
+    <div class="paginate aa">
+        <div class="paginate"><a href="?page={{ page.pages }}">{{ page.pages }}</a></div>
+    </div>
+
+    <div class="paginate aa">
+        <a href="?page={{ page.pages }}">尾页</a>
+    </div>
+</div>
+
+
 {% end %}

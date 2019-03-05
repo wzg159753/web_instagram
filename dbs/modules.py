@@ -82,3 +82,11 @@ class Post(Base):
     create_time = Column(DATETIME, default=datetime.now)
     user_id = Column(Integer, ForeignKey('user.id'))
     users = relationship('User', back_populates='posts')
+
+    @classmethod
+    def get_posts(cls):
+        """
+        用于分页的方法  注意分页只能作用对象
+        :return:
+        """
+        return session.query(Post).order_by(Post.id.desc())

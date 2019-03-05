@@ -3,8 +3,39 @@
 {% block title %}Index Page{% end %}
 
 {% block body %}
-    <span>Is Index Page</span><br>
-    {% for img in path_list %}
-        <a href="/post/{{ img.id }}"><img src="{{ static_url(img.img_url) }}" alt="" width="900px"></a>
-    {% end %}
+<div class="row">
+    <div class="col col-sm-8">
+        {% for img in path_list %}
+        <div class="card bg-dark text-white">
+            <a href="/post/{{ img.id }}"><img class="card-img img-fluid" src="{{ static_url(img.img_url) }}" alt="Card image"></a>
+            <div class="card-img-overlay">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
+                    content. This content is a little bit longer.</p>
+                <p class="card-text">Last updated 3 mins ago</p>
+            </div>
+        </div>
+        {% end %}
+    </div>
+    <div class="col col-sm-4">
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="..." alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+        <div class="card" style="width: 18rem;">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Cras justo odio</li>
+            <li class="list-group-item">Dapibus ac facilisis in</li>
+            <li class="list-group-item">Vestibulum at eros</li>
+        </ul>
+    </div>
+    </div>
+
+</div>
+
 {% end %}
