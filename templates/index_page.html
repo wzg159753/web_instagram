@@ -36,15 +36,18 @@
 {#  左侧  #}
     <div class="col col-sm-8">
         {% for img in path_list %}
-        <div class="card bg-dark text-white">
-            <a href="/post/{{ img.id }}"><img class="card-img img-fluid" src="{{ static_url(img.img_url) }}" alt="Card image"></a>
-            <div class="card-img-overlay">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
-                    content. This content is a little bit longer.</p>
-                <p class="card-text">Last updated 3 mins ago</p>
+        <a href="/post/{{ img.id }}">
+            <div class="card bg-dark text-white">
+                <img class="card-img img-fluid" src="{{ static_url(img.img_url) }}" alt="Card image">
+                <div class="card-img-overlay">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
+                        additional
+                        content. This content is a little bit longer.</p>
+                    <p class="card-text">Last updated 3 mins ago</p>
+                </div>
             </div>
-        </div>
+        </a>
         {% end %}
     </div>
 

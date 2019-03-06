@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, DATETIME, ForeignKey
+from sqlalchemy import Column, Integer, String, DATETIME, ForeignKey, Table
 from .connect import Base, Session
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import exists
@@ -90,3 +90,33 @@ class Post(Base):
         :return:
         """
         return session.query(Post).order_by(Post.id.desc())
+
+
+class Like(Base):
+    """
+    创建Like 用户喜欢模型
+    """
+    __tablename__ = 'likes'
+
+    user_id = Column(Integer, ForeignKey('user.id'), primary_key=True)
+    post_id = Column(Integer, ForeignKey('posts.id'), primary_key=True)
+    create_time = Column(DATETIME, default=datetime.now)
+
+
+class Atte(Base):
+    """
+    建立用户关注表
+    """
+    __tablename__ = 'attes'
+    # 关注人
+    m_id = Column(Integer, ForeignKey('user.id'), primary_key=True) # 关注用户
+    # 被关注人
+    y_id = Column(Integer, ForeignKey('user.id'), primary_key=True) # 被关注
+
+    def __repr__(self):
+        return '''
+            <Atte>++m_id={}, y_id={}
+        '''.format(
+            self.m_id,
+            self.y_id
+        )

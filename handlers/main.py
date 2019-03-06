@@ -2,7 +2,7 @@ import tornado.web
 from tornado.web import RequestHandler
 from pycket.session import SessionMixin
 from utils.picture import UploadImage
-from utils.verify import add_post_for, get_post_all, get_upload_post, get_post_id, paginations
+from utils.verify import add_post_for, get_upload_post, get_post_id, paginations, get_user_likes, get_user, add_like, is_like_exits, delete_like, count_like, is_atte_exits, add_atte_prople, delete_atte,delete_upload_img
 
 
 class BaseHandler(RequestHandler, SessionMixin):
@@ -35,7 +35,9 @@ class ExploreHandler(BaseHandler):
 class PostHandler(BaseHandler):
     def get(self, *args, **kwargs):
         post = get_post_id(kwargs['p_id'])
-        self.render('post_page.html', post = post)
+        like_prople = count_like(post.id)
+        print(like_prople)
+        self.render('post_page.html', post = post, like_prople=like_prople)
 
 
 class UploadHandler(BaseHandler):
@@ -63,8 +65,22 @@ class UploadHandler(BaseHandler):
 
 class PorfileHandler(BaseHandler):
     def get(self, *args, **kwargs):
+        my = get_user(self.current_user)
         username = self.get_argument('name', '')
-        print(username)
+        if not username:
+            username = self.current_user
+        user = get_user(username)
+        upload_posts = get_upload_post(user.username)
+        like_post = get_user_likes(user.username)
+        atte = is_atte_exits(my.id, user.id)
+        self.render('profile_page.html',
+                    upload_posts=upload_posts,
+                    user=user,
+                    like_post=like_post,
+                    atte = atte
+                    )
+
+
 
 class LoginoutHandler(BaseHandler):
 
@@ -72,3 +88,53 @@ class LoginoutHandler(BaseHandler):
     def get(self, *args, **kwargs):
         self.session.delete('user_id')
         self.redirect('/login')
+
+
+class LikeHandler(BaseHandler):
+    @tornado.web.authenticated
+    def post(self, *args, **kwargs):
+        pid = self.get_argument('pid', '')
+        user = get_user(self.current_user)
+        data = is_like_exits(user.id, int(pid))
+        print('**********',data)
+        if not is_like_exits(user.id, int(pid)):
+            add_like(user.id, int(pid))
+        else:
+            delete_like(user.id, int(pid))
+
+
+class AtteHandler(BaseHandler):
+    @tornado.web.authenticated
+    def post(self, *args, **kwargs):
+        y_id = self.get_argument('yid', '')
+        user = get_user(self.current_user)
+        if not is_atte_exits(user.id, int(y_id)):
+            add_atte_prople(user.id, int(y_id))
+        else:
+            delete_atte(user.id, int(y_id))
+
+
+class DeleteHandler(BaseHandler):
+    """
+    删除用户上传的图片
+    """
+    def get(self, *args, **kwargs):
+        # 先获取当前用户
+        user = get_user(self.current_user)
+        # 获取点击删除时传来的参数 pid为图片id pnm为用户id
+        key = self.get_argument('pid', '')
+        pnm = self.get_argument('pnm', '')
+        # 判断传来的用户id是不是当前用户id  判断是否是自己上传的
+        if user.id == int(pnm):
+            # 判断该图片是否添加喜欢了
+            if is_like_exits(user.id, int(key)):
+                # 如果添加喜欢就删除喜欢
+                delete_like(user.id, int(key))
+            # 删除图片
+            delete_upload_img(user.id, int(key))
+            self.redirect('/')
+
+        else:
+            self.write("<script>alert('用户权限不够')</script>")
+            self.redirect('/profile')
+

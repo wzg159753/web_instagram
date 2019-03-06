@@ -17,9 +17,12 @@
             <a href="/post/{{ p.id }}"><img class="card-img-top" src="{{ static_url(p.thumb_url) }}"
                                             alt="Card image cap"></a>
             <div class="card-body">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                    card's
-                    content.</p>
+                <p class="card-text">
+                    <span class="badge badge-warning">用户上传</span>
+                    <a href="/profile?name={{ p.users.username }}">
+                        <span class="badge badge-dark">{{ p.users.username }}</span>
+                    </a>
+                </p>
             </div>
         </div>
         {% end %}
@@ -57,6 +60,5 @@
 
     </ul>
 </nav>
-
 
 {% end %}

@@ -1,0 +1,72 @@
+{% extends ./base.html %}
+
+{% block title %}Profile Page{% end %}
+
+{% block body %}
+
+<div class="jumbotron">
+  <h1 class="display-3">Hello, world! {{ user.username }}</h1>
+  <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+  <hr class="my-4">
+  <p class="{{ user.id }}" id="uid">It uses utility classes for typography and spacing to space content out within the larger container.</p>
+  <p class="lead">
+{#    <a class="btn btn-primary btn-lg" href="" role="button">#}
+{#        #}
+{#    </a>#}
+      <button class="btn btn-primary" id="btn">
+          {% if atte %}
+            取消关注
+        {% else %}
+            关注
+        {% end %}
+      </button>
+  </p>
+</div>
+
+
+{# 用户上传 #}
+<div class="card">
+    <div class="card-header"><h3>用户上传</h3></div>
+    <div class="row">
+        {#    循环posts实例，取每一个对象  这里的posts是该用户上传的所有图片    #}
+        {% for i in upload_posts %}
+            <div class="card col-6 col-sm-3" style="width: 18rem; display: inline-block">
+                {#        拿到每个对象的id，当点击大图的时候跳转到单个图片页        #}
+                <a href="/post/{{ i.id }}">
+                    {#        拿到每个对象的thumb_url缩略图路径 展示到页面          #}
+                    <img src="{{ static_url('{}'.format(i.thumb_url)) }}" class="card-img-top" alt="..."></a>
+                <div class="card-body">
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's
+                        content.</p>
+                </div>
+            </div>
+        {% end %}
+    </div>
+</div>
+
+    
+{# 用户喜欢 #}
+<div class="card">
+    <div class="card-header"><h3>用户喜欢</h3></div>
+    <div class="row">
+        {#    拿到用户喜欢的图片实例 循环出每一个对象    #}
+        {% for i in like_post %}
+            <div class="card col-6 col-sm-3" style="width: 18rem; display: inline-block">
+                <a href="/post/{{ i.id }}">
+                    <img src="{{ static_url('{}'.format(i.thumb_url)) }}" class="card-img-top" alt="..."></a>
+                <div class="card-body">
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's
+                        content.</p>
+                </div>
+            </div>
+        {% end %}
+    </div>
+</div>
+
+{% end %}
+
+{% block script %}
+<script src="{{ static_url('js/atte.js') }}"></script>
+{% end %}
