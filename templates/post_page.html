@@ -11,8 +11,10 @@
 
         <button type="button" class="btn btn-primary">
             当前图片有 <span class="badge badge-light aaa" id="num">
-            {{ like_prople }}
-        </span>喜欢
+            {% if like_prople %}
+                {{ like_prople }}
+            {% end %}
+        </span>人喜欢
         </button>
         <div style="display: inline; float: right"><strong>上传用户</strong><a href="/profile?name={{ post.users.username }}">{{ post.users.username }}</a><strong>, 点击进入详情页</strong></div>
     </div>

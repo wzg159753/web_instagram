@@ -35,6 +35,7 @@ class ExploreHandler(BaseHandler):
 class PostHandler(BaseHandler):
     def get(self, *args, **kwargs):
         post = get_post_id(kwargs['p_id'])
+        print(post.id)
         like_prople = count_like(post.id)
         print(like_prople)
         self.render('post_page.html', post = post, like_prople=like_prople)
@@ -91,16 +92,18 @@ class LoginoutHandler(BaseHandler):
 
 
 class LikeHandler(BaseHandler):
+
     @tornado.web.authenticated
     def post(self, *args, **kwargs):
         pid = self.get_argument('pid', '')
         user = get_user(self.current_user)
-        data = is_like_exits(user.id, int(pid))
-        print('**********',data)
         if not is_like_exits(user.id, int(pid)):
             add_like(user.id, int(pid))
         else:
             delete_like(user.id, int(pid))
+        like_prople = count_like(int(pid))
+        print(like_prople)
+        self.write({'result': 1, "count": str(like_prople)})
 
 
 class AtteHandler(BaseHandler):

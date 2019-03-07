@@ -3,11 +3,12 @@
 {% block title %}Login Page{% end %}
 
 {% block body %}
-<div class="row">
+<div class="row justify-content-center">
+    <div class="col-10 col-sm-4 text-center">
     <form action="/login?next={{ next }}" method="post" enctype="multipart/form-data">
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">@</span>
+                <span class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i>&ensp;</span>
             </div>
             <input type="text" name="username" class="form-control" placeholder="Username" aria-label="Username"
                    aria-describedby="basic-addon1">
@@ -15,13 +16,14 @@
 
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">@</span>
+                <span class="input-group-text" id="basic-addon1"><i class="fa fa-key"></i></span>
             </div>
             <input type="password" name="password" class="form-control" placeholder="Password" aria-label="Password"
                    aria-describedby="basic-addon1">
         </div>
         <button class="btn btn-success">Login</button>
     </form>
+        </div>
 </div>
 
 {% end %}

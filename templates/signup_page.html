@@ -4,7 +4,8 @@
 
 {% block body %}
     <div>{% if msg %}{{ msg }}{% end %}</div>
-<div class="row">
+<div class="row justify-content-center">
+    <div class="col-10 col-sm-4 text-center">
     <form action="/signup" method="post" enctype="multipart/form-data">
 
         <div class="input-group mb-3">
@@ -17,6 +18,9 @@
 
         <div>
             <input type="radio" name="sex" value="男"><label for=""><strong>男</strong></label>
+            &emsp;
+            &emsp;
+            &emsp;
             <input type="radio" name="sex" value="女"><label for=""><strong>女</strong></label>
         </div>
         <div class="input-group mb-3">
@@ -37,5 +41,6 @@
 
         <button class="btn btn-success btn-lg">Sign Up</button>
     </form>
+        </div>
 </div>
 {% end %}
