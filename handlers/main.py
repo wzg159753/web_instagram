@@ -65,14 +65,24 @@ class UploadHandler(BaseHandler):
 
 
 class PorfileHandler(BaseHandler):
+    """
+    用户个人页面 包含上传和喜欢
+    """
     def get(self, *args, **kwargs):
+        # 提前获取个人当前用户id
         my = get_user(self.current_user)
+        # 用于获取不通用户的个人页面
         username = self.get_argument('name', '')
+        # 如果没有这个参数  就代表是当前用户的个人页
         if not username:
             username = self.current_user
+        # 获取用户
         user = get_user(username)
+        # 获取用户上传的图片
         upload_posts = get_upload_post(user.username)
+        # 获取用户喜欢的图片
         like_post = get_user_likes(user.username)
+        # 获取该用户是否已经关注  或添加关注
         atte = is_atte_exits(my.id, user.id)
         self.render('profile_page.html',
                     upload_posts=upload_posts,
@@ -92,28 +102,42 @@ class LoginoutHandler(BaseHandler):
 
 
 class LikeHandler(BaseHandler):
-
+    """
+    用户添加喜欢  与heart.js的ajax交互 接收一个post请求
+    """
     @tornado.web.authenticated
     def post(self, *args, **kwargs):
+        # 获取ajax传来的pid
         pid = self.get_argument('pid', '')
         user = get_user(self.current_user)
+        # 判断当前用户是否已经喜欢了 这张图片
         if not is_like_exits(user.id, int(pid)):
+            # 如果没喜欢就添加喜欢
             add_like(user.id, int(pid))
         else:
+            # 如果喜欢了就 删除喜欢
             delete_like(user.id, int(pid))
+        # 对用户喜欢表操作完成后 立即执行统计图片被喜欢数
         like_prople = count_like(int(pid))
-        print(like_prople)
+        # 讲被喜欢数发送的ajax前端
         self.write({'result': 1, "count": str(like_prople)})
 
 
 class AtteHandler(BaseHandler):
+    """
+    用户添加关注
+    """
     @tornado.web.authenticated
     def post(self, *args, **kwargs):
+        # 获取被关注用户
         y_id = self.get_argument('yid', '')
         user = get_user(self.current_user)
+        # 判断该用户是否已经被关注
         if not is_atte_exits(user.id, int(y_id)):
+            # 如果没有就添加关注
             add_atte_prople(user.id, int(y_id))
         else:
+            # 如果已经被关注就取消关注
             delete_atte(user.id, int(y_id))
 
 
