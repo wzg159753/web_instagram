@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}room page{% end %}
+
+{% block body %}
+
+
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4">Fluid jumbotron</h1>
+    <p class="lead">
+        <div id="inbox">
+    {% for message in messages %}
+    {% raw message['html'] %}
+    {% end %}
+</div>
+    </p>
+  </div>
+</div>
+
+
+
+
+{#<div id="inbox">#}
+{#    {% for message in messages %}#}
+{#    {% raw message['html'] %}#}
+{#    {% end %}#}
+{#</div>#}
+
+<div class="row col-sm-8" id="input">
+    <form action="" method="post" id="messageform">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">Default</span>
+            </div>
+            <input type="text" name="body" id="message" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">&emsp;&emsp;
+            <button class="btn btn-danger">发送</button>
+        </div>
+
+    </form>
+</div>
+
+
+
+{#<div id="input">#}
+{#    <form action="#" method="post" id="messageform">#}
+{#        <table>#}
+{#            <tr>#}
+{#                <td>#}
+{#                    <input name="body" id="message" style="width:500px">#}
+{#                </td>#}
+{#                <td style="padding-left:5px">#}
+{#                    <input type="submit" value="提交">#}
+{#                </td>#}
+{#            </tr>#}
+{#        </table>#}
+{#    </form>#}
+{#</div>#}
+
+{% end %}
+
+{% block script %}
+<script src="{{ static_url('js/chat.js') }}" type="text/javascript"></script>
+{% end %}

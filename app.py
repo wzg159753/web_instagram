@@ -3,7 +3,8 @@ import tornado.ioloop
 import tornado.options
 from tornado.options import define, options
 
-from handlers import main, auth
+from handlers import main, auth, chat
+
 from utils.verify import hash_md5
 
 define('port', default=8080, help='run port', type=int)
@@ -21,7 +22,9 @@ class Application(tornado.web.Application):
             (r'/loginout', main.LoginoutHandler),
             (r'/like', main.LikeHandler),
             (r'/atte', main.AtteHandler),
-            (r'/delete', main.DeleteHandler)
+            (r'/delete', main.DeleteHandler),
+            (r'/room', chat.RoomHandler),
+            (r'/ws', chat.MessageHandler)
         ]
 
         settings = dict(
