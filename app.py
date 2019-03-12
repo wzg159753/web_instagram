@@ -3,7 +3,7 @@ import tornado.ioloop
 import tornado.options
 from tornado.options import define, options
 
-from handlers import main, auth, chat
+from handlers import main, auth, chat, service
 
 from utils.verify import hash_md5
 
@@ -24,7 +24,8 @@ class Application(tornado.web.Application):
             (r'/atte', main.AtteHandler),
             (r'/delete', main.DeleteHandler),
             (r'/room', chat.RoomHandler),
-            (r'/ws', chat.MessageHandler)
+            (r'/ws', chat.MessageHandler),
+            (r'/async', service.AsyncHandler)
         ]
 
         settings = dict(

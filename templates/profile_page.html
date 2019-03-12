@@ -34,7 +34,7 @@
                 {#        拿到每个对象的id，当点击大图的时候跳转到单个图片页        #}
                 <a href="/post/{{ i.id }}">
                     {#        拿到每个对象的thumb_url缩略图路径 展示到页面          #}
-                    <img src="{{ static_url('{}'.format(i.thumb_url)) }}" class="card-img-top" alt="..."></a>
+                    <img src="{{ static_url('{}'.format(i.thumb_url)) }}" class="card-img-top" alt="..." style="height: 200px"></a>
                 <div class="card-body">
                     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
                         card's
