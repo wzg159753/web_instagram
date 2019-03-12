@@ -42,9 +42,11 @@
                 </li>
             </ul>
             <span class="navbar-text">
+{#       如果用户存在 或登录 就显示退出 和用户名         #}
                 {% if current_user %}
                 <span><i class="fa fa-address-card" aria-hidden="true"></i>{{ current_user }}</span>|<span><a href="/loginout"><i class="fa fa-share-square" aria-hidden="true"></i>退出</a></span>
                 {% else %}
+{#       如果用户没有登录 就显示登录和注册         #}
                 <span><a href="/login"><i class="fa fa-arrow-up" aria-hidden="true"></i>登录</a></span>|<span><a href="/signup"><i class="fa fa-user-plus" aria-hidden="true"></i>注册</a></span>
                 {% end %}
     </span>

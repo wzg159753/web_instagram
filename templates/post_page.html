@@ -9,6 +9,7 @@
     <div class="card-body">
         <strong> please click </strong><i class="fa fa-heart text-danger" aria-hidden="true" id="heart"></i> <strong>add Like</strong>
 
+        {#    查看多少人喜欢这张图片    #}
         <button type="button" class="btn btn-primary">
             当前图片有 <span class="badge badge-light aaa" id="num">
             {% if like_prople %}
@@ -16,6 +17,7 @@
             {% end %}
         </span>人喜欢
         </button>
+        {#    点击用户进入详情页 将用户名当做参数传递给profile个人页面    #}
         <div style="display: inline; float: right"><strong>上传用户</strong><a href="/profile?name={{ post.users.username }}">{{ post.users.username }}</a><strong>, 点击进入详情页</strong></div>
     </div>
 </div>
@@ -24,6 +26,7 @@
     <img src="{{ static_url(post.img_url) }}" alt="" width="1110">
 </div>
 <ul class="list-group">
+    {#  删除图片 将post的id和post的用户id传给后台服务器使用  #}
   <li class="list-group-item"><a href="/delete?pid={{ post.id }}&pnm={{ post.user_id }}"><span class="badge badge-pill badge-danger">删除图片</span></a></li>
   <li class="list-group-item"><span class="badge badge-pill badge-info">上传者：{{ post.users.username }}</span></li>
   <li class="list-group-item"><span class="badge badge-pill badge-dark">性别：{{ post.users.sex }}</span></li>
@@ -32,6 +35,7 @@
 </ul>
 
 {#  当前图片的id  #}
+{# 用于点击红心时使用 #}
 <span id="pid" style="display: none">{{ post.id }}</span>
 
 {% end %}

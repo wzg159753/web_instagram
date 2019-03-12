@@ -11,13 +11,17 @@
 
 <div>
     <div class="row">
+
+{#    page.items 显示第一页所有的对象    #}
         {% for p in page.items %}
 
         <div class="card" style="width: 18rem;">
+{#     取对象的id 用于跳转到大图  取对象的缩略图用于展示       #}
             <a href="/post/{{ p.id }}"><img class="card-img-top" src="{{ static_url(p.thumb_url) }}" style="height: 200px" alt="Card image cap"></a>
             <div class="card-body">
                 <p class="card-text">
                     <span class="badge badge-warning">用户上传</span>
+{#       正向查询到用户 将名字用作参数直接点击到上传人的个人页             #}
                     <a href="/profile?name={{ p.users.username }}">
                         <span class="badge badge-dark">{{ p.users.username }}</span>
                     </a>
@@ -34,18 +38,21 @@
         <li class="page-item">
             <a class="page-link" href="?page=1" tabindex="-1">首页</a>
         </li>
-
+                                {# 如果没有上一页 就将这个按钮设置成灰色 #}
         <li class="page-item {% if not page.has_previous %}disabled{% end %}">
             <a class="page-link" href="?page={{ page.previous_page }}" tabindex="-1">上一页</a>
         </li>
-
+        {#    循环一共有多少页  就展示多少个按钮    #}
         {% for n in range(1, page.pages + 1) %}
+        {#    如果当前页数和数据库分页的页数相等  就显示灰色按钮    #}
         <li class="page-item{% if number == str(n) %} active{% end %}">
+            {#      点击对应的页数跳转到对应页      #}
             <a class="page-link" href="?page={{ n }}">{{ n }} <span class="sr-only">(current)</span></a>
         </li>
         {% end %}
-
+        {# 判断有没有下一页 如果没有就显示灰色 不能点击 #}
         <li class="page-item {% if not page.has_next %}disabled{% end %}">
+            {#      如果有 就将下一页的页号当做参数发送给自己      #}
             <a class="page-link" href="?page={{ page.next_page }}">下一页</a>
         </li>
 
