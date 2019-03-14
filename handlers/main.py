@@ -163,5 +163,5 @@ class DeleteHandler(BaseHandler):
 
         else:
             self.write("<script>alert('用户权限不够')</script>")
-            self.redirect('/profile')
+
 

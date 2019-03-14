@@ -1,2 +1,9 @@
 {# 单独的发送消息的html模板  将这个模板字符串化 发送到前端 #}
-<div class="message alert alert-dark" role="alert" id="m{{ chat["id"] }}"><span class="badge badge-warning">{{ chat['username'] }}</span>说：{% module linkify(chat["body"]) %}</div>
+<div class="message alert alert-dark" role="alert" id="m{{ chat["id"] }}">
+    <span class="badge badge-warning">
+        {{ chat['username'] }}
+    </span>说：{% module linkify(chat["body"]) %}
+    {% if chat['img_url'] %}
+        <img src="{{ static_url(chat['img_url']) }}" alt="">
+    {% end %}
+</div>
