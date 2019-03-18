@@ -1,6 +1,6 @@
 import tornado.web
 
-from utils.verify import verify_login, signup_user, get_user, update_user
+from utils.verify import verify_login, signup_user
 from .main import BaseHandler
 
 
@@ -73,12 +73,12 @@ class ChangeSignHandler(BaseHandler):
 
     @tornado.web.authenticated
     def post(self, *args, **kwargs):
-        user = get_user(self.current_user)
+        user = self.dbs.orm.get_user()
         username = self.get_argument('username', '').replace(' ', '')
         password = self.get_argument('password', '').replace(' ', '')
         sex = self.get_argument('sex', '')
         if user.username == username:
-            info = update_user(user.username, username, sex, password)
+            info = self.dbs.orm.update_user(user.username, username, sex, password)
             if info:
                 # 如果修改成功就把session信息删除  重新登录
                 self.session.delete('user_id')

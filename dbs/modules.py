@@ -4,6 +4,7 @@ from .connect import Base, Session
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import exists
 
+
 session = Session()
 
 class User(Base):
@@ -51,14 +52,6 @@ class User(Base):
         """
         return session.query(exists().where(User.username == username)).scalar()
 
-    @classmethod
-    def get_user(cls, username):
-        """
-        获取用户方法
-        :param username:
-        :return:
-        """
-        return session.query(User).filter(User.username == username).first()
 
     @classmethod
     def get_user_info(cls, username, password):
@@ -69,6 +62,7 @@ class User(Base):
         :return:
         """
         return session.query(User).filter(User.username == username, User.password == password).first()
+
 
 
 class Post(Base):
@@ -83,13 +77,7 @@ class Post(Base):
     user_id = Column(Integer, ForeignKey('user.id'))
     users = relationship('User', back_populates='posts')
 
-    @classmethod
-    def get_posts(cls):
-        """
-        用于分页的方法  注意分页只能作用对象
-        :return:
-        """
-        return session.query(Post).order_by(Post.id.desc())
+
 
 
 class Like(Base):

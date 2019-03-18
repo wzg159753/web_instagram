@@ -4,7 +4,6 @@ import tornado.escape
 import tornado.gen
 import tornado.httpclient
 from utils.picture import UploadImage
-from utils.verify import add_post_for
 import tornado.web
 from handlers.chat import MessageHandler
 
@@ -22,7 +21,7 @@ class syncHandler(BaseHandler):
             f.write(resp.content)
 
 
-class AsyncHandler(tornado.web.RequestHandler):
+class AsyncHandler(BaseHandler):
     """
     异步请求图片api
     """
@@ -45,7 +44,8 @@ class AsyncHandler(tornado.web.RequestHandler):
             im.save_upload(resp.body)
             im.save_thumb()
             # 返回post实例
-            post = add_post_for(im.upload_path, im.thumb_path, username)
+            self.orm.username = username
+            post = self.orm.add_post_for(im.upload_path, im.thumb_path)
             # 构造消息
             url = 'http://192.168.35.128:8080/post/{}'.format(post.id)
             # 构造参数
