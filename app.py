@@ -26,7 +26,8 @@ class Application(tornado.web.Application):
             (r'/room', chat.RoomHandler),
             (r'/ws', chat.MessageHandler),
             (r'/async', service.AsyncHandler),
-            (r'/upws', chat.UploadMessageHandler)
+            # (r'/upws', chat.UploadMessageHandler),
+            (r'/change', auth.ChangeSignHandler)
         ]
 
         settings = dict(

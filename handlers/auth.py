@@ -1,5 +1,8 @@
-from utils.verify import verify_login, signup_user
+import tornado.web
+
+from utils.verify import verify_login, signup_user, get_user, update_user
 from .main import BaseHandler
+
 
 
 class LoginHandler(BaseHandler):
@@ -59,3 +62,26 @@ class SignupHandler(BaseHandler):
 
         else:
             self.redirect('/signup?msg={}'.format('password is not '))
+
+
+class ChangeSignHandler(BaseHandler):
+    """
+    修改用户信息
+    """
+    def get(self, *args, **kwargs):
+        self.render('change_page.html')
+
+    @tornado.web.authenticated
+    def post(self, *args, **kwargs):
+        user = get_user(self.current_user)
+        username = self.get_argument('username', '').replace(' ', '')
+        password = self.get_argument('password', '').replace(' ', '')
+        sex = self.get_argument('sex', '')
+        if user.username == username:
+            info = update_user(user.username, username, sex, password)
+            if info:
+                # 如果修改成功就把session信息删除  重新登录
+                self.session.delete('user_id')
+                self.redirect('/login')
+        else:
+            self.write('<script>alert("用户权限不够")</script>')

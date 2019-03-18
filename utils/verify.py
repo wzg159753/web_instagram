@@ -226,10 +226,26 @@ def delete_upload_img(u_id, p_id):
     :return:
     """
     post = get_post(u_id, p_id)
+    # 一定要先删除图片  要不然会报错
     os.remove(os.path.join('static', post.img_url))
     os.remove(os.path.join('static', post.thumb_url))
     session.execute('DELETE FROM posts WHERE id={} AND user_id={}'.format(p_id, u_id))
     session.commit()
 
 
+def update_user(user, username, sex, password):
+    """
+    修改用户名密码  先验证要修改的用户是不是当前用户
+    :param user: 当前用户
+    :param username: 修改用户
+    :param sex: 性别
+    :param password: 密码
+    :return:
+    """
+    # 加密密码
+    pwd = hash_md5(password)
+    info = session.query(User).filter(User.username == user)
+    info.update({User.username: username, User.sex: sex, User.password: pwd})
+    session.commit()
+    return True
 
