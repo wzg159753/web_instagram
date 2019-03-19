@@ -2,7 +2,7 @@ import os
 
 import hashlib
 from dbs.modules import User, session, Post, Like, Atte
-
+from sqlalchemy.sql import exists
 from sqlalchemy_pagination import paginate
 
 
@@ -16,37 +16,37 @@ def hash_md5(content):
 
 
 
-def verify_login(username, password):
-    """
-    验证登录方法 对密码进行MD5比对
-    :param username:
-    :param password:
-    :return:
-    """
-    if username and password:
-        # 调用modules中的User的类方法验证通过
-        result = User.get_user_info(username, hash_md5(password))
-        return result
-    else:
-        return False
-
-def signup_user(username, password, sex):
-    """
-    注册用户 判断这个用户名存不存在 如果存在就 输出msg
-    :param username:
-    :param password:
-    :param sex:
-    :return:
-    """
-    info = {}
-    if not User.is_exits_user(username):
-        # 如果不存在  就注册
-        User.add_user(username, hash_md5(password), sex)
-        info = {'status': 200, 'msg': '/'}
-        return info
-    else:
-        info = {'status': 400, 'msg': 'error'}
-        return info
+# def verify_login(username, password):
+#     """
+#     验证登录方法 对密码进行MD5比对
+#     :param username:
+#     :param password:
+#     :return:
+#     """
+#     if username and password:
+#         # 调用modules中的User的类方法验证通过
+#         result = User.get_user_info(username, hash_md5(password))
+#         return result
+#     else:
+#         return False
+#
+# def signup_user(username, password, sex):
+#     """
+#     注册用户 判断这个用户名存不存在 如果存在就 输出msg
+#     :param username:
+#     :param password:
+#     :param sex:
+#     :return:
+#     """
+#     info = {}
+#     if not User.is_exits_user(username):
+#         # 如果不存在  就注册
+#         User.add_user(username, hash_md5(password), sex)
+#         info = {'status': 200, 'msg': '/'}
+#         return info
+#     else:
+#         info = {'status': 400, 'msg': 'error'}
+#         return info
 
 
 
@@ -472,3 +472,70 @@ class AddLike(ORMHandler):
         info = self.session.query(Like).filter(Like.user_id == user_id, Like.post_id == post_id).first()
         self.session.delete(info)
         self.session.commit()
+
+
+class SignAndLogin(ORMHandler):
+    """
+    登录验证类
+    """
+    def add_user(self, username, password, sex):
+        """
+        添加用户方法
+        :param username:
+        :param password:
+        :param sex:
+        :return:
+        """
+        info = User(username=username, password=password, sex=sex)
+        self.session.add(info)
+        self.session.commit()
+        return True
+
+    def is_exits_user(self, username):
+        """
+        判断用户名存不存在方法
+        :param username:
+        :return:
+        """
+        return self.session.query(exists().where(User.username == username)).scalar()
+
+    def get_user_info(self, username, password):
+        """
+        判断用户信息方法  主要是后台password的比对
+        :param username:
+        :param password:
+        :return:
+        """
+        return self.session.query(User).filter(User.username == username, User.password == password).first()
+
+    def verify_login(self, username, password):
+        """
+        验证登录方法 对密码进行MD5比对
+        :param username:
+        :param password:
+        :return:
+        """
+        if username and password:
+            # 调用modules中的User的类方法验证通过
+            result = self.get_user_info(username, hash_md5(password))
+            return result
+        else:
+            return False
+
+    def signup_user(self, username, password, sex):
+        """
+        注册用户 判断这个用户名存不存在 如果存在就 输出msg
+        :param username:
+        :param password:
+        :param sex:
+        :return:
+        """
+        info = {}
+        if not self.is_exits_user(username):
+            # 如果不存在  就注册
+            self.add_user(username, hash_md5(password), sex)
+            info = {'status': 200, 'msg': '/'}
+            return info
+        else:
+            info = {'status': 400, 'msg': 'error'}
+            return info

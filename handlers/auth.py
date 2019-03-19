@@ -1,6 +1,4 @@
 import tornado.web
-
-from utils.verify import verify_login, signup_user
 from .main import BaseHandler
 
 
@@ -20,7 +18,7 @@ class LoginHandler(BaseHandler):
         username = self.get_argument('username', '')
         password = self.get_argument('password', '')
         # 调用验证登录模块
-        info = verify_login(username, password)
+        info = self.user.verify_login(username, password)
         if info:
             # 如果next不为空， 就说明是跳转过来的
             if next is not None:
@@ -51,7 +49,7 @@ class SignupHandler(BaseHandler):
         # 判断第一次和第二次密码是否相同
         if password1 == password2:
             # 如果相同  就调用注册函数
-            result = signup_user(username, password1, sex)
+            result = self.user.signup_user(username, password1, sex)
             if result['status'] ==  200:
                 # 如果注册成功 就直接设置为登录状态
                 self.session.set('user_id', username)

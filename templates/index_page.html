@@ -36,6 +36,7 @@
 {#  左侧  #}
     <div class="col col-sm-8">
         {#    用户上传的图片展示  将用户上传的图片展示到页面    #}
+        {% if path_list %}
         {% for img in path_list %}
         <a href="/post/{{ img.id }}">
             <div class="card bg-dark text-white">
@@ -50,6 +51,7 @@
             </div>
         </a>
         {% end %}
+        {% end %}
     </div>
 
 {#  右侧  #}
@@ -57,7 +59,7 @@
         <div class="card bg-info" style="width: 18rem;">
             <img class="card-img-top" src="{{ static_url('images/th.jpg') }}" alt="Card image cap">
             <div class="card-body">
-                <h5 class="card-title">Card title</h5>
+                <h5 class="card-title">{{ current_user }}</h5>
                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
                     card's content.</p>
                 <a href="#" class="btn btn-primary">Go somewhere</a>

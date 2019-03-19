@@ -3,7 +3,7 @@ from tornado.web import RequestHandler
 from pycket.session import SessionMixin
 from dbs.modules import Session
 from utils.picture import UploadImage
-from utils.verify import OtherFunc, ORMHandler, AtteUser, AddLike
+from utils.verify import OtherFunc, ORMHandler, AtteUser, AddLike, SignAndLogin
 
 
 # class make_session(object):
@@ -39,6 +39,7 @@ class BaseHandler(RequestHandler, SessionMixin):
         self.other = OtherFunc(**info)
         self.like = AddLike(**info)
         self.atte = AtteUser(**info)
+        self.user = SignAndLogin(**info)
 
 
 
